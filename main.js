@@ -6,15 +6,11 @@ const { createCanvas, loadImage } = require('canvas');
 
 const fs = require('fs');
 
-const token = fs.readFileSync("res/token.txt");
+const token = "";
 
 const commands = [{
     name: 'profile',
     description: 'Shows your funky profile.'
-  },
-  {
-    name: 'mokeybatel',
-    description: 'Spend 2500 funky points to mokey batel snowspike.'
 }];
 
 const rest = new REST({ version: '9' }).setToken(token);
@@ -152,22 +148,6 @@ client.on('interactionCreate', async interaction => {
         interaction.editReply({ files: [ outputAttachment ] });
       });
 
-      break;
-    case "mokeybatel":
-      let userPoints = await db.get(`${interaction.member.user.id}.points`);
-
-      if (userPoints >= 2500) {
-        userPoints -= 2500;
-
-        let snowspike = interaction.guild.members.fetch("924451568961613824");
-        snowspike.sendMessage(`${interaction.member.user.tag} wants to mokey batel you in the funky shack`);
-
-        interaction.reply({ content: "Snowspike has been notified.", ephemeral: true });
-      } else {
-        interaction.reply({ content: "You don't have the required amount of funky points.", ephemeral: true });
-      }
-
-      await db.set(`${interaction.member.user.id}.points`, userPoints);
       break;
   }
 });
